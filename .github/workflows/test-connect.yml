@@ -25,10 +25,10 @@ jobs:
           ID_TOKEN=$(echo "$TOKEN_JSON" | jq -r .value)
           echo "Decoded JWT Payload:"
           echo "$ID_TOKEN" | awk -F. '{print $2}' | base64 -d 2>/dev/null | jq .
-      - name: CAWSC
+      - name: AWS Authorization
         uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-      - name: Whoami
+      - name: Get Authentication Token
         run: aws sts get-caller-identity
