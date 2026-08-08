@@ -1,0 +1,113 @@
+name: Dynamic Multi-Account AWS Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+    inputs:
+      target_account:
+        description: 'Specify account to deploy (dev, prod, or all)'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - dev
+          - prod
+
+permissions:
+  id-token: write  # Required for AWS OIDC authentication
+  contents: read
+
+jobs:
+  # =======================================================
+  # Job 1: Discover & Filter Account Config Files
+  # =======================================================
+  discover-accounts:
+    name: Discover AWS Accounts
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has_accounts: ${{ steps.set-matrix.outputs.has_accounts }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Parse Account Configs
+        id: set-matrix
+        run: |
+          CURRENT_BRANCH="${GITHUB_REF#refs/heads/}"
+          MANUAL_TARGET="${{ inputs.target_account }}"
+          
+          # Initialize an empty JSON array
+          SELECTED_ACCOUNTS="[]"
+
+          # Loop through each JSON file in .github/aws-configs/
+          for file in .github/aws-configs/*.json; do
+            [ -e "$file" ] || continue
+            
+            ACCOUNT_NAME=$(jq -r '.account_name' "$file")
+            
+            # Condition 1: Check if triggered via workflow_dispatch (Manual Selection)
+            if [ -n "$MANUAL_TARGET" ] && [ "$MANUAL_TARGET" != "all" ]; then
+              if [ "$ACCOUNT_NAME" == "$MANUAL_TARGET" ]; then
+                CONFIG=$(jq -c '.' "$file")
+                SELECTED_ACCOUNTS=$(echo "$SELECTED_ACCOUNTS" | jq ". + [$CONFIG]")
+              fi
+            # Condition 2: Check if current branch matches allowed branches in config file
+            else
+              MATCHES_BRANCH=$(jq -r --arg branch "$CURRENT_BRANCH" '.branches | contains([$branch])' "$file")
+              if [ "$MATCHES_BRANCH" == "true" ]; then
+                CONFIG=$(jq -c '.' "$file")
+                SELECTED_ACCOUNTS=$(echo "$SELECTED_ACCOUNTS" | jq ". + [$CONFIG]")
+              fi
+            fi
+          done
+
+          # Format output as a GitHub Actions matrix JSON object
+          MATRIX_JSON=$(jq -c -n --argjson include "$SELECTED_ACCOUNTS" '{include: $include}')
+          COUNT=$(echo "$SELECTED_ACCOUNTS" | jq 'length')
+
+          echo "matrix=$MATRIX_JSON" >> $GITHUB_OUTPUT
+          
+          if [ "$COUNT" -gt 0 ]; then
+            echo "has_accounts=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_accounts=false" >> $GITHUB_OUTPUT
+          fi
+
+  # =======================================================
+  # Job 2: Run Pipeline for Matched Accounts dynamically
+  # =======================================================
+  deploy:
+    name: Deploy to AWS (${{ matrix.account_name }})
+    needs: discover-accounts
+    if: needs.discover-accounts.outputs.has_accounts == 'true'
+    runs-on: ubuntu-latest
+    
+    # Set target environment dynamically for secret scoping and approvals
+    environment: ${{ matrix.environment }}
+
+    strategy:
+      matrix: ${{ fromJson(needs.discover-accounts.outputs.matrix) }}
+      fail-fast: false  # Allow other accounts to finish if one fails
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate with AWS via OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ matrix.aws_role }}
+          aws-region: ${{ matrix.aws_region }}
+
+      - name: Run AWS Deployment Commands
+        run: |
+          echo "Connected to AWS Account: ${{ matrix.account_name }}"
+          aws sts get-caller-identity
+          
+          # Add deployment commands here (e.g. Terraform, AWS CLI, CDK, CloudFormation)
+          # Example: aws s3 sync ./dist s3://my-app-${{ matrix.account_name }}-bucket

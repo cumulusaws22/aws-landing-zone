@@ -1,0 +1,7 @@
+{
+  "account_name": "cumulus.aws2026",
+  "aws_role": "arn:aws:iam::568339496407:role/GitHubActions-AWS-OIDC-Role",
+  "aws_region": "us-east-1",
+  "environment": "development",
+  "branches": ["develop"]
+}
