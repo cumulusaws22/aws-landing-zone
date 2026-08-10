@@ -29,6 +29,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-region: us-east-1
-          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+          #role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.OIDC_ROLE_TO_ASSUME }}
       - name: Get Authentication Token
         run: aws sts get-caller-identity
