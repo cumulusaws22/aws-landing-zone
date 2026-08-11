@@ -4,8 +4,6 @@
 # Tag Policy
 ################################################################
 
-data "aws_organizations_organization" "current" {}
-
 resource "aws_organizations_policy" "mandatory_tags" {
   name        = var.tag_policy_name
   description = "Enterprise mandatory tagging policy"
