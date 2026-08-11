@@ -6,11 +6,6 @@
 
 data "aws_organizations_organization" "current" {}
 
-resource "aws_organizations_policy_type" "tag_policy" {
-  root_id = data.aws_organizations_organization.current.roots[0].id
-  policy_type = "TAG_POLICY"
-}
-
 resource "aws_organizations_policy" "mandatory_tags" {
   name        = var.tag_policy_name
   description = "Enterprise mandatory tagging policy"
