@@ -15,13 +15,3 @@ variable "non-prod_ou_id" {
   type        = string
   default     = "ou-slmb-ytdz020q"
 }
-
-variable "region_deny_ous" {
-  type = map(string)
-}
-variable "allowed_regions" {
-  type = list(string)
-}
-variable "control_tower_home_region" {
-  type = string
-}
