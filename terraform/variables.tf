@@ -26,13 +26,3 @@ variable "tag_policy_name" {
   type        = string
   default     = "Enterprise-Mandatory-Tags"
 }
-
-
-#------------------------------
-
-  #tags = {
-    #Application = "payment"
-    #Environment = "prod"
-    #Owner       = "cloud-ops"
-    #CostCenter  = "CC1001"
-  #}
