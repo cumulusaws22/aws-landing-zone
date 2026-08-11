@@ -1,7 +1,6 @@
 variable "aws_region" {
   description = "AWS region for the Organizations API"
   type        = string
-  default     = "us-east-1"
 }
 
 variable "scp_name_prefix" {
@@ -13,11 +12,28 @@ variable "scp_name_prefix" {
 variable "non-prod_ou_id" {
   description = "AWS region for the Organizations API"
   type        = string
-  default     = "ou-slmb-ytdz020q"
 }
 
 variable "tag_policy_name" {
   description = "Name of the mandatory tag policy"
   type        = string
-  default     = "Enterprise-Mandatory-Tags"
+}
+
+
+variable "sso_instance_arn" {
+  description = "IAM Identity Center instance ARN"
+  type        = string
+}
+
+variable "identity_center_group_id" {
+  description = "IAM Identity Center group ID"
+  type        = string
+}
+
+variable "target_accounts" {
+  description = "AWS accounts to which the CloudOps permission set should be assigned"
+  type = map(object({
+    account_id = string
+    account_name = string
+  }))
 }
