@@ -16,22 +16,6 @@ variable "non-prod_ou_id" {
   default     = "ou-slmb-ytdz020q"
 }
 
-
-variable "region_deny_ous" {
-  default = {
-    nonprod    = "arn:aws:organizations::200845569305:ou/o-yzrg6g6dd8/ou-slmb-ytdz020q"
-  }
-}
-
-
-variable "allowed_regions" {
-  default = [
-    "us-east-1",
-    "us-east-2"
-  ]
-}
-
-
-variable "control_tower_home_region" {
-  default = "us-east-1"
-}
+variable "region_deny_ous" {}
+variable "allowed_regions" {}
+variable "control_tower_home_region" {}
