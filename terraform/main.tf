@@ -1,8 +1,19 @@
 
 ################################################################
-# Region Restriction SCPs
+# Tag Policy
 ################################################################
+resource "aws_organizations_policy" "mandatory_tags" {
+  name        = var.tag_policy_name
+  description = "Enterprise mandatory tagging policy"
+  type        = "TAG_POLICY"
 
+  content = file("${path.module}/../policies/mandatory-tags.json")
+}
+
+resource "aws_organizations_policy_attachment" "mandatory_tags" {
+  policy_id = aws_organizations_policy.mandatory_tags.id
+  target_id = var.tag_policy_target_id
+}
 
 
 ##################################################################

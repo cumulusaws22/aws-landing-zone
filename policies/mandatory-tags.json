@@ -1,0 +1,72 @@
+{
+  "tags": {
+    "Application": {
+      "tag_key": {
+        "@@assign": "Application"
+      },
+      "report_required_tag_for": {
+        "@@assign": [
+          "ec2:instance",
+          "s3:bucket",
+          "rds:db",
+          "lambda:function",
+          "ecs:cluster",
+          "dynamodb:table"
+        ]
+      }
+    },
+    "Environment": {
+      "tag_key": {
+        "@@assign": "Environment"
+      },
+      "tag_value": {
+        "@@assign": [
+          "dev",
+          "test",
+          "nonprod",
+          "prod"
+        ]
+      },
+      "report_required_tag_for": {
+        "@@assign": [
+          "ec2:instance",
+          "s3:bucket",
+          "rds:db",
+          "lambda:function",
+          "ecs:cluster",
+          "dynamodb:table"
+        ]
+      }
+    },
+    "Owner": {
+      "tag_key": {
+        "@@assign": "Owner"
+      },
+      "report_required_tag_for": {
+        "@@assign": [
+          "ec2:instance",
+          "s3:bucket",
+          "rds:db",
+          "lambda:function",
+          "ecs:cluster",
+          "dynamodb:table"
+        ]
+      }
+    },
+    "CostCenter": {
+      "tag_key": {
+        "@@assign": "CostCenter"
+      },
+      "report_required_tag_for": {
+        "@@assign": [
+          "ec2:instance",
+          "s3:bucket",
+          "rds:db",
+          "lambda:function",
+          "ecs:cluster",
+          "dynamodb:table"
+        ]
+      }
+    }
+  }
+}
