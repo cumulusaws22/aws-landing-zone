@@ -23,7 +23,6 @@ variable "region_deny_ous" {
   type        = map(string)
 
   default = {
-    #uat        = "arn:aws:organizations::123456789012:ou/o-example/ou-prod"
     nonprod    = "arn:aws:organizations::200845569305:ou/o-yzrg6g6dd8/ou-slmb-ytdz020q"
   }
 }
