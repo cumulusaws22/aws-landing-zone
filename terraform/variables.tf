@@ -17,11 +17,10 @@ variable "non-prod_ou_id" {
 }
 
 variable "region_deny_ous" {
-  description = "OU ARNs where Region Deny should be enabled"
   type = map(string)
 }
 variable "allowed_regions" {
-  description = "AWS Regions allowed for workloads"
   type = list(string)
+  default = ["us-east-1", "us-east-2"]
 }
 variable "control_tower_home_region" {}
