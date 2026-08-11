@@ -3,22 +3,7 @@
 # Region Restriction SCPs
 ################################################################
 
-resource "aws_organizations_policy" "restrict_regions" {
-  name        = "${var.scp_name_prefix}-Restrict-Regions"
-  description = "Restrict AWS resource creation outside approved regions"
-  type        = "SERVICE_CONTROL_POLICY"
-  content     = file("${path.module}/../policies/restrict-regions.json")
 
-  tags = {
-    ManagedBy = "Terraform"
-    Purpose   = "RegionRestriction"
-  }
-}
-
-resource "aws_organizations_policy_attachment" "restrict_regions_prod" {
-  policy_id = aws_organizations_policy.restrict_regions.id
-  target_id = var.non-prod_ou_id
-}
 
 ##################################################################
 # Restrict Public Access To S3
