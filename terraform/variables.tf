@@ -9,3 +9,9 @@ variable "scp_name_prefix" {
   type        = string
   default     = "CT-Governance"
 }
+
+variable "non-prod_ou_id" {
+  description = "AWS region for the Organizations API"
+  type        = string
+  default     = "ou-slmb-ytdz020q"
+}

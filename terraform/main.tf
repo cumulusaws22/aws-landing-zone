@@ -21,3 +21,13 @@ resource "aws_organizations_policy" "deny_public_s3" {
     Purpose   = "S3Security"
   }
 }
+
+resource "aws_organizations_policy_attachment" "restrict_regions_prod" {
+  policy_id = aws_organizations_policy.restrict_regions.id
+  target_id = var.non-prod_ou_id
+}
+
+resource "aws_organizations_policy_attachment" "deny_public_s3_prod" {
+  policy_id = aws_organizations_policy.deny_public_s3.id
+  target_id = var.non-prod_ou_id
+}
