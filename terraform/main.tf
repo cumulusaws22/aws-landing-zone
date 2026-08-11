@@ -12,7 +12,7 @@ resource "aws_organizations_policy" "mandatory_tags" {
 
 resource "aws_organizations_policy_attachment" "mandatory_tags" {
   policy_id = aws_organizations_policy.mandatory_tags.id
-  target_id = var.tag_policy_target_id
+  target_id = var.non-prod_ou_id
 }
 
 
