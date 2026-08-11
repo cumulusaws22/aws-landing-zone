@@ -30,10 +30,4 @@ variable "identity_center_group_id" {
   type        = string
 }
 
-variable "target_accounts" {
-  description = "AWS accounts to which the CloudOps permission set should be assigned"
-  type = map(object({
-    account_id = string
-    account_name = string
-  }))
-}
+variable "target_accounts" {}
