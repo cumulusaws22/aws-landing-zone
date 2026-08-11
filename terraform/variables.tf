@@ -28,7 +28,7 @@ variable "tag_policy_name" {
 }
 
 
-------------------------------
+#------------------------------
 
   #tags = {
     #Application = "payment"
