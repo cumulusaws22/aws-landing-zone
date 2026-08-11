@@ -16,6 +16,12 @@ variable "non-prod_ou_id" {
   default     = "ou-slmb-ytdz020q"
 }
 
-variable "region_deny_ous" {}
-variable "allowed_regions" {}
+variable "region_deny_ous" {
+  description = "OU ARNs where Region Deny should be enabled"
+  type = map(string)
+}
+variable "allowed_regions" {
+  description = "AWS Regions allowed for workloads"
+  type = list(string)
+}
 variable "control_tower_home_region" {}

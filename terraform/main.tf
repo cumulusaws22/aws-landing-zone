@@ -45,3 +45,16 @@ resource "aws_organizations_policy_attachment" "deny_public_s3_prod" {
 # Region Restriction Guardrail
 ##################################################
 
+resource "aws_controltower_control" "region_deny" {
+
+  for_each = var.region_deny_ous
+
+  control_identifier = "arn:aws:controltower:${var.control_tower_home_region}::control/CT.MULTISERVICE.PV.1"
+
+  target_identifier = each.value
+
+  parameters {
+    key   = "AllowedRegions"
+    value = join(",", var.allowed_regions)
+  }
+}
