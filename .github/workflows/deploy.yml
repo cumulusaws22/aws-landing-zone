@@ -19,9 +19,12 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  TF_WORKING_DIR: ./terraform
+
 jobs:
   Authenticate-via-OIDC:
-    name: Landing Zone Deployment
+    name: Authenticate AWS via OIDC
     runs-on: ubuntu-latest
 
     steps:
@@ -48,19 +51,19 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: terraform
+        working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform init
 
       - name: Terraform Format Check
-        working-directory: terraform
+        working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform fmt -check -recursive
 
       - name: Terraform Validate
-        working-directory: terraform
+        working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform validate
 
       - name: Terraform Plan
-        working-directory: terraform
+        working-directory: ${{ env.TF_WORKING_DIR }}
         run: |
           terraform plan -out=tfplan
            
@@ -71,9 +74,9 @@ jobs:
 
     steps:
       - name: Terraform Plan
-        working-directory: terraform
+        working-directory: ${{ env.TF_WORKING_DIR }}
         run: terraform plan -out=tfplan
 
       #- name: Terraform Apply
-        #working-directory: terraform
+        #working-directory: ${{ env.TF_WORKING_DIR }}
         #run: terraform apply -auto-approve tfplan
