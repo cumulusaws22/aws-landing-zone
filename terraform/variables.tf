@@ -22,4 +22,6 @@ variable "region_deny_ous" {
 variable "allowed_regions" {
   type = list(string)
 }
-variable "control_tower_home_region" {}
+variable "control_tower_home_region" {
+  type = string
+}
