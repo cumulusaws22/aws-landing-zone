@@ -17,7 +17,7 @@ variable "non-prod_ou_id" {
 }
 
 variable "region_deny_ous" {
-  type = string
+  type = map(string)
 }
 variable "allowed_regions" {
   type = list(string)
