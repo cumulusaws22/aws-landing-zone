@@ -21,6 +21,5 @@ variable "region_deny_ous" {
 }
 variable "allowed_regions" {
   type = list(string)
-  default = ["us-east-1", "us-east-2"]
 }
 variable "control_tower_home_region" {}
