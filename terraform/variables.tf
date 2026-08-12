@@ -18,16 +18,3 @@ variable "tag_policy_name" {
   description = "Name of the mandatory tag policy"
   type        = string
 }
-
-
-variable "sso_instance_arn" {
-  description = "IAM Identity Center instance ARN"
-  type        = string
-}
-
-variable "identity_center_group_id" {
-  description = "IAM Identity Center group ID"
-  type        = string
-}
-
-variable "target_accounts" {}
